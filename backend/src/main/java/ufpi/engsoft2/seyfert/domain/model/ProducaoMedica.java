@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,4 +23,8 @@ public class ProducaoMedica extends EntityBase {
     private BigDecimal valorFaturado;
     private BigDecimal valorCancelado;
     private SituacaoProducaoMedica situacao;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medico_id", insertable = false, updatable = false)
+    private Medico medico;
 }

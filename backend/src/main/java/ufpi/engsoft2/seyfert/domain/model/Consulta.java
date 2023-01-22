@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -31,11 +36,23 @@ public class Consulta extends EntityBase {
     @Enumerated(EnumType.STRING)
     private SituacaoConsulta situacao;
 
+    @OneToOne
+    private Solicitacao solicitacao;
+
+    @OneToOne(mappedBy = "consulta")
+    private PagamentoConsulta pagamentoConsulta;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "medico_id")
+    private Medico medico;
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "paciente_id")
+    private Paciente paciente;
+
     @PrePersist
     private void gerarCodigoConsulta(){
         String codigoVerificaoGerado = GeradorCodigoValidacaoConsulta.gerarCodigo();
         setCodigoVerificacao(codigoVerificaoGerado);
     }
-
-    //Deve ser ligada com uma proposta e uma consulta
 }
