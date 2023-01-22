@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch GeradorCodigoValidacaoConsulta",
+            "request": "launch",
+            "mainClass": "ufpi.engsoft2.seyfert.shared.utils.GeradorCodigoValidacaoConsulta",
+            "projectName": "seyfert"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SeyfertApplication<seyfert>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "ufpi.engsoft2.seyfert.SeyfertApplication",
+            "projectName": "seyfert",
+            "args": "",
+            "envFile": "${workspaceFolder}/.vscode/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=52240 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=seyfert"
+        }
+    ]
+}

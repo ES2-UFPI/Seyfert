@@ -2,7 +2,9 @@ package ufpi.engsoft2.seyfert;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+@EntityScan(basePackages = {"ufpi.engsoft2.seyfert.domain.model"})
 @SpringBootApplication
 public class SeyfertApplication {
 
