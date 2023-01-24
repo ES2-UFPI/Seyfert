@@ -31,6 +31,8 @@ public class Solicitacao extends EntityBase {
     private LocalTime horaFinal;
 
     private String descricaoSolicitacao;
+
+    @Enumerated(EnumType.STRING)
     private SituacaoSolicitacao situacaoSolicitacao;
     
     @Enumerated(EnumType.STRING)
