@@ -10,19 +10,48 @@ Um médico pode cadastrar quantas propostas quiser para diferentes solicitaçõe
 package ufpi.engsoft2.seyfert;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class CadastroDeProposta{
+    //### TESTE ###
+    String especialidadeSolicitacao; String especialidadeMedico;
+    LocalDate dataSolicitacao; LocalDate dataProposta;
+
+    ArrayList<Consulta> consultas = new ArrayList<Consulta>();
+    Consulta consulta = new Consulta();
 
     public void cadastrarProposta(LocalTime horario, LocalDate data) throws ExcecaoDeEspecialidade, ExcecaoDeDataDeSolicitacao, ExcecaoDeDisponibilidadeData, ExcecaoDeDisponibilidadeHorario{
+        consultas.add(consulta);
+        
         //Checar validade da especialidade do medico
-        if(false) throw new ExcecaoDeEspecialidade("Especialidade do médico não está de acordo com a solicitação.\n");
+        if(especialidadeMedico != especialidadeSolicitacao) throw new ExcecaoDeEspecialidade("Especialidade do médico não está de acordo com a solicitação.\n");
 
         //Checar se a proposta foi feita para o dia da solicitacao
-        if(false) throw new ExcecaoDeDataDeSolicitacao("Data da proposta não está de acordo com a data solicitada.\n");
+        if(dataProposta != dataSolicitacao) throw new ExcecaoDeDataDeSolicitacao("Data da proposta não está de acordo com a data solicitada.\n");
 
         //Checar disponibilidade do medico para o dia/horario
-        if(false) throw new ExcecaoDeDisponibilidadeData("Data da proposta não está de acordo com a data solicitada.\n");
-        if(false) throw new ExcecaoDeDisponibilidadeHorario("Data da proposta não está de acordo com a data solicitada.\n");
+        if(!dataDisponivel(data)) throw new ExcecaoDeDisponibilidadeData("Data da proposta não está de acordo com a data solicitada.\n");
+        if(!horarioDisponivel(horario)) throw new ExcecaoDeDisponibilidadeHorario("Data da proposta não está de acordo com a data solicitada.\n");
+    }
+
+    private boolean dataDisponivel(LocalDate data){
+        //Checar disponibilidade do medico para o dia
+        for (Consulta consulta : consultas) {
+            LocalDate dataConsulta = consulta.data;
+            if(dataConsulta == data) return false;
+        }
+
+        return true;
+    }
+
+    private boolean horarioDisponivel(LocalTime horario){
+        //Checar disponibilidade do medico para o horario
+        for (Consulta consulta : consultas) {
+            LocalTime horarioConsulta = consulta.horario;
+            if(horarioConsulta == horario) return false;
+        }
+
+        return true;
     }
 
     public class ExcecaoDeEspecialidade extends Exception {
