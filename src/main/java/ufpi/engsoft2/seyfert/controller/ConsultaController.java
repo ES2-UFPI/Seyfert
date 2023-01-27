@@ -19,9 +19,9 @@ public class ConsultaController {
     private ConsultaService consultaService;
 
     @GetMapping
-    public ResponseEntity<ConsultaDTO> getConsulta(UUID uuid){
+    public ResponseEntity<ConsultaDTO> getConsulta(String id){
+        UUID uuid = UUID.fromString(id);
         ConsultaDTO consultaDTO = consultaService.getConsulta(uuid);
-
         return ResponseEntity.ok(consultaDTO);
     }
 }
