@@ -1,7 +1,5 @@
 package ufpi.engsoft2.seyfert.shared.handler;
 
-import java.util.logging.Handler;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
