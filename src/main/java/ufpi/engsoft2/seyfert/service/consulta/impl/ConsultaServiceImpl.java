@@ -12,7 +12,7 @@ import ufpi.engsoft2.seyfert.domain.model.Consulta;
 import ufpi.engsoft2.seyfert.domain.repository.ConsultaRepository;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaMapper;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaService;
-import ufpi.engsoft2.seyfert.shared.exception.EntityNotFound;
+import ufpi.engsoft2.seyfert.shared.exception.EntityNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +28,7 @@ public class ConsultaServiceImpl implements ConsultaService {
     public ConsultaDTO getConsulta(UUID uuid) {
         Consulta consulta = consultaRepository.findByUuid(uuid);
         if (consulta == null) {
-            throw new EntityNotFound("Consulta não encontrada");
+            throw new EntityNotFoundException("Consulta não encontrada");
         }
 
         return consultaMapper.toDto(consulta);

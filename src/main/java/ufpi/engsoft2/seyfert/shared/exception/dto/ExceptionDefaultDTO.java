@@ -1,4 +1,6 @@
-package ufpi.engsoft2.seyfert.shared.exception;
+package ufpi.engsoft2.seyfert.shared.exception.dto;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
