@@ -12,7 +12,8 @@ import ufpi.engsoft2.seyfert.shared.mapper.EntityNoFormMapper;
 @Component
 @Mapper(
     componentModel = "spring",
-    nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
+    nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE
+)
 public interface ConsultaMapper extends EntityNoFormMapper<ConsultaDTO, Consulta> {
     @Mappings({
         @Mapping(target = "nomeCompletoPaciente", source = "paciente.nomeCompleto"),

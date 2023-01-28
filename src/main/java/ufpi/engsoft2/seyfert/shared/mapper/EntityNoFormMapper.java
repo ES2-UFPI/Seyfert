@@ -4,7 +4,7 @@ import java.text.Normalizer.Form;
 import java.util.List;
 
 public interface EntityNoFormMapper<Dto, Entity> {
-    Entity toModel(Form form); 
+    Entity toModel(Dto form); 
     Dto    toDto(Entity entity);
 
     List<Entity> toModel(List<Dto> dtoList);
