@@ -15,6 +15,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -74,4 +75,9 @@ public class Medico extends EntityBase {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "medico_id")
     private List<Consulta> consultas;
+
+    @PrePersist
+    public void gerarNomeCompleto(){
+        this.nomeCompleto = this.nome+" "+this.sobrenome;
+    }
 }

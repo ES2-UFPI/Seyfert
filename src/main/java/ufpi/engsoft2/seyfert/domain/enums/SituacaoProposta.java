@@ -7,5 +7,6 @@ import lombok.Getter;
 @Getter
 public enum SituacaoProposta {
     CRIADA,
-    ACEITA;
+    ACEITA,
+    VENCIDA;
 }
