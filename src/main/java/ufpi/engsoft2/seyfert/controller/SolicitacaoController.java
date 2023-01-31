@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +29,10 @@ public class SolicitacaoController {
 		URI uri = uriComponentsBuilder.path("/solicitacao/{id}").buildAndExpand(solicitacaoDTO.getUuid()).toUri();
 
 		return ResponseEntity.created(uri).body(solicitacaoDTO);
+    }
+
+    @GetMapping("/{uuid}")
+    public ResponseEntity<SolicitacaoDTO> listarSolicitacoesPaciente(){
+        return ResponseEntity.ok().build();
     }
 }

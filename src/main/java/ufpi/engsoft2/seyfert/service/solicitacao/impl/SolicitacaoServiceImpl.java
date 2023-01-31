@@ -1,6 +1,10 @@
 package ufpi.engsoft2.seyfert.service.solicitacao.impl;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -40,5 +44,10 @@ public class SolicitacaoServiceImpl implements SolicitacaoService {
         solicitacaoDTO.setNomeEspecialidade("Ortopedia");
 
         return solicitacaoDTO;
+    }
+
+    public List<SolicitacaoDTO> listarSolicitacoesPaciente(Long IdPaciente) {
+        List<SolicitacaoDTO> listSolicitacaoDTO = solicitacaoMapper.toDto(solicitacaoRepository.findByPacienteId(IdPaciente));
+        return listSolicitacaoDTO;
     }
 }
