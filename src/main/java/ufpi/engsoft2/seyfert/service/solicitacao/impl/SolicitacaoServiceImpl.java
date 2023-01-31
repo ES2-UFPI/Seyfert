@@ -3,6 +3,9 @@ package ufpi.engsoft2.seyfert.service.solicitacao.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -44,8 +47,9 @@ public class SolicitacaoServiceImpl implements SolicitacaoService {
         return solicitacaoDTO;
     }
 
-    public List<SolicitacaoDTO> listarSolicitacoesPaciente(Long idPaciente) {
-        List<SolicitacaoDTO> listSolicitacaoDTO = solicitacaoMapper.toDto(solicitacaoRepository.findAllByPacienteId(idPaciente));
-        return listSolicitacaoDTO;
+    public Page<SolicitacaoDTO> listarSolicitacoesPaciente(Long idPaciente, Pageable pageable) {
+        List<Solicitacao> solicitacoes = solicitacaoRepository.findAllByPacienteId(idPaciente, pageable).getContent();
+        Page<SolicitacaoDTO> pageSolicitacaoDTO = new PageImpl<>(solicitacaoMapper.toDto(solicitacoes), pageable, solicitacoes.size());
+        return pageSolicitacaoDTO;
     }
 }
