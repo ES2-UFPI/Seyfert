@@ -9,5 +9,5 @@ import ufpi.engsoft2.seyfert.domain.model.Solicitacao;
 
 @Repository
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
-    public Page<Solicitacao> findAllByPacienteId(Long idPaciente, Pageable pageable);
+    public Page<Solicitacao> findByPacienteId(Long idPaciente, Pageable pageable);
 }

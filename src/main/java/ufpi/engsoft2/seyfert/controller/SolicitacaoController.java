@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +39,14 @@ public class SolicitacaoController {
     }
 
     @GetMapping("/{idPaciente}")
-    public ResponseEntity<Page<SolicitacaoDTO>> listarSolicitacoesPaciente(@PathVariable Long idPaciente, @RequestParam int page, @RequestParam int size){
-        Pageable pageable = PageRequest.of(page, size);
+    public ResponseEntity<Page<SolicitacaoDTO>> listarSolicitacoesPaciente
+    (@PathVariable Long idPaciente,@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size,
+    @RequestParam(required = false) String sort, @RequestParam(required = false) Sort.Direction order){
+        if (sort == null) sort = "id";
+        if (order == null) order = Direction.ASC;
+        if (page == null) page = 0;
+        if (size == null) size = 10;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order, sort));
         Page<SolicitacaoDTO> pageSolicitacaoDTO = solicitacaoService.listarSolicitacoesPaciente(idPaciente, pageable);
         return ResponseEntity.ok().body(pageSolicitacaoDTO);
     }

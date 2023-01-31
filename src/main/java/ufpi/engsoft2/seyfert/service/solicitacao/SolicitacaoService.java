@@ -8,5 +8,5 @@ import ufpi.engsoft2.seyfert.domain.form.SolicitacaoForm;
 
 public interface SolicitacaoService {
     SolicitacaoDTO cadastrar(SolicitacaoForm solicitacao);
-    public Page<SolicitacaoDTO> listarSolicitacoesPaciente(Long idPaciente, Pageable pageable);
+    Page<SolicitacaoDTO> listarSolicitacoesPaciente(Long idPaciente, Pageable pageable);
 }

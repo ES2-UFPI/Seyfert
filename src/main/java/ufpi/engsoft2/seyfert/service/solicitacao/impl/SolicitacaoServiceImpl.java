@@ -19,6 +19,7 @@ import ufpi.engsoft2.seyfert.domain.model.Solicitacao;
 import ufpi.engsoft2.seyfert.domain.repository.SolicitacaoRepository;
 import ufpi.engsoft2.seyfert.service.solicitacao.SolicitacaoMapper;
 import ufpi.engsoft2.seyfert.service.solicitacao.SolicitacaoService;
+import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
 
 @Service
 @AllArgsConstructor
@@ -48,8 +49,11 @@ public class SolicitacaoServiceImpl implements SolicitacaoService {
     }
 
     public Page<SolicitacaoDTO> listarSolicitacoesPaciente(Long idPaciente, Pageable pageable) {
-        List<Solicitacao> solicitacoes = solicitacaoRepository.findAllByPacienteId(idPaciente, pageable).getContent();
+        List<Solicitacao> solicitacoes = solicitacaoRepository.findByPacienteId(idPaciente, pageable).getContent();
         Page<SolicitacaoDTO> pageSolicitacaoDTO = new PageImpl<>(solicitacaoMapper.toDto(solicitacoes), pageable, solicitacoes.size());
+        if (pageSolicitacaoDTO.isEmpty()){
+            throw new BussinesRuleException("Nenhuma solicitação encontrada");
+        }
         return pageSolicitacaoDTO;
     }
 }
