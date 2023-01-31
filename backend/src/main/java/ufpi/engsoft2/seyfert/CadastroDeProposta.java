@@ -6,7 +6,6 @@ Um médico pode cadastrar quantas propostas quiser para diferentes solicitaçõe
     - Em nenhuma hipótese um médico pode cadastrar propostas em especialidades que não sejam as suas.
 */
 
-//### PROTÓTIPO ###
 package ufpi.engsoft2.seyfert;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,12 +16,9 @@ public class CadastroDeProposta{
     String especialidadeSolicitacao; String especialidadeMedico;
     LocalDate dataSolicitacao; LocalDate dataProposta;
 
-    ArrayList<Consulta> consultas = new ArrayList<Consulta>();
-    Consulta consulta = new Consulta();
+    ArrayList<ConsultaDTO> consultas = getConsultas();
 
     public void cadastrarProposta(LocalTime horario, LocalDate data) throws ExcecaoDeEspecialidade, ExcecaoDeDataDeSolicitacao, ExcecaoDeDisponibilidadeData, ExcecaoDeDisponibilidadeHorario{
-        consultas.add(consulta);
-        
         //Checar validade da especialidade do medico
         if(especialidadeMedico != especialidadeSolicitacao) throw new ExcecaoDeEspecialidade("Especialidade do médico não está de acordo com a solicitação.\n");
 
@@ -32,13 +28,25 @@ public class CadastroDeProposta{
         //Checar disponibilidade do medico para o dia/horario
         if(!dataDisponivel(data)) throw new ExcecaoDeDisponibilidadeData("Data da proposta não está de acordo com a data solicitada.\n");
         if(!horarioDisponivel(horario)) throw new ExcecaoDeDisponibilidadeHorario("Data da proposta não está de acordo com a data solicitada.\n");
+    
+        //Cadastrar proposta
+    }
+
+    private ArrayList<ConsultaDTO> getConsultas(){
+        ArrayList<ConsultaDTO> consultas = new ArrayList<ConsultaDTO>();
+
+        //Iterar sobre as consultas e retornar as consultas do medico
+        /*for () {
+            if(consulta.nomeCompletoMedico == nomeMedico) consultas.add(consulta);
+        } */
+
+        return consultas;
     }
 
     private boolean dataDisponivel(LocalDate data){
         //Checar disponibilidade do medico para o dia
-        for (Consulta consulta : consultas) {
-            LocalDate dataConsulta = consulta.data;
-            if(dataConsulta == data) return false;
+        for (ConsultaDTO consulta : consultas) {
+            if(consulta.dataAtendimento == data) return false;
         }
 
         return true;
@@ -46,9 +54,8 @@ public class CadastroDeProposta{
 
     private boolean horarioDisponivel(LocalTime horario){
         //Checar disponibilidade do medico para o horario
-        for (Consulta consulta : consultas) {
-            LocalTime horarioConsulta = consulta.horario;
-            if(horarioConsulta == horario) return false;
+        for (ConsultaDTO consulta : consultas) {
+            if(consulta.horario == horario) return false;
         }
 
         return true;
