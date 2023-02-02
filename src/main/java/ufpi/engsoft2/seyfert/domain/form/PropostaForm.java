@@ -1,13 +1,16 @@
-package main.java.ufpi.engsoft2.seyfert.domain.form;
+package ufpi.engsoft2.seyfert.domain.form;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ufpi.engsoft2.seyfert.domain.enums.Sexo;
+import ufpi.engsoft2.seyfert.domain.enums.SituacaoProposta;
 
 @AllArgsConstructor
 @NoArgsConstructor

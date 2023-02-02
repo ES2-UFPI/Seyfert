@@ -9,14 +9,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import main.java.ufpi.engsoft2.seyfert.domain.form.PropostaForm;
 import ufpi.engsoft2.seyfert.domain.dto.PropostaDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoProposta;
+import ufpi.engsoft2.seyfert.domain.form.PropostaForm;
 import ufpi.engsoft2.seyfert.domain.model.EspecialidadeMedica;
 import ufpi.engsoft2.seyfert.domain.model.Medico;
 import ufpi.engsoft2.seyfert.domain.model.Proposta;
 import ufpi.engsoft2.seyfert.domain.model.Solicitacao;
+import ufpi.engsoft2.seyfert.domain.repository.MedicoRepository;
 import ufpi.engsoft2.seyfert.domain.repository.PropostaRepository;
+import ufpi.engsoft2.seyfert.domain.repository.SolicitacaoRepository;
 import ufpi.engsoft2.seyfert.service.proposta.PropostaService;
 import ufpi.engsoft2.seyfert.service.proposta.PropostaServiceMapper;
 
@@ -64,7 +66,7 @@ public class PropostaServiceImpl implements PropostaService{
 
     }
 
-    public PropostaDTO cadastrarProposta(PropostaForm form) throws ExcecaoDeEspecialidade, ExcecaoDeDataDeSolicitacao, ExcecaoDeDisponibilidadeData, ExcecaoDeDisponibilidadeHorario{ 
+    public PropostaDTO cadastrarProposta(PropostaForm form){ 
         UUID medicoId = form.getMedicoId();
         UUID solicitacaoId = form.getSolicitacaoUuid();
 
@@ -91,9 +93,9 @@ public class PropostaServiceImpl implements PropostaService{
         return propostaServiceMapper.toDto(proposta);
     }
     
-    private Boolean validarEspecialidade(){
-        for (EspecialidadeMedica especialidadeMedico : especialidades) {
-            if(especialidadeMedico.getNomeEspecialidade() == especialidadeSolicitacao.getNomeEspecialidade());
-        }
-    }
+    // private Boolean validarEspecialidade(){
+    //     for (EspecialidadeMedica especialidadeMedico : especialidades) {
+    //         if(especialidadeMedico.getNomeEspecialidade() == especialidadeSolicitacao.getNomeEspecialidade());
+    //     }
+    // }
 }
