@@ -30,7 +30,7 @@ public class ConsultaController {
         ConsultaDTO consultaFake = ConsultaDTO
             .builder()
             .nomeCompletoMedico("Medico Teste Fake")
-            .nomeCompletoPaciente("Felipe Santiago Mossoro")
+            .nomeCompletoPaciente("Matheus Webber Santiago Mossoro")
             .dataAtendimento(LocalDate.now())
             .descricaoMedica("Uma descrição teste")
             .horario(LocalTime.now())
