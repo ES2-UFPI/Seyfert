@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch GeradorCodigoValidacaoConsulta",
+            "request": "launch",
+            "mainClass": "ufpi.engsoft2.seyfert.shared.utils.GeradorCodigoValidacaoConsulta",
+            "projectName": "seyfert"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SeyfertApplication<seyfert>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "ufpi.engsoft2.seyfert.SeyfertApplication",
+            "projectName": "seyfert",
+            "args": "",
+            "envFile": "${workspaceFolder}/.vscode/.env"
+        }
+    ]
+}
