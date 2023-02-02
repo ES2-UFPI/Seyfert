@@ -42,12 +42,21 @@ public class SolicitacaoController {
         return ResponseEntity.created(uri).body(solicitacaoDTO);
     }
 
-    @GetMapping("/{uuidPaciente}")
+    @GetMapping("/paciente/{uuidPaciente}")
     public ResponseEntity<Page<SolicitacaoDTO>> listarSolicitacoesPaciente(@PathVariable UUID uuidPaciente,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataParaAtendimento,
             @RequestParam(required = false) String nomeEspecialidade,
             @PageableDefault(sort = "dataParaAtendimento", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok().body(solicitacaoService.listarSolicitacoesPaciente(uuidPaciente, dataParaAtendimento,
+                nomeEspecialidade, pageable));
+    }
+
+    @GetMapping("/medico/{uuidMedico}")
+    public ResponseEntity<Page<SolicitacaoDTO>> listarSolicitacoesMedico(@PathVariable UUID uuidMedico,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataParaAtendimento,
+            @RequestParam(required = false) String nomeEspecialidade,
+            @PageableDefault(sort = "dataParaAtendimento", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable pageable) {
+        return ResponseEntity.ok().body(solicitacaoService.listarSolicitacoesMedico(uuidMedico, dataParaAtendimento,
                 nomeEspecialidade, pageable));
     }
 }
