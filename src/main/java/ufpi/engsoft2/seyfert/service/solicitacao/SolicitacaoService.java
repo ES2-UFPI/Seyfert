@@ -12,4 +12,5 @@ import ufpi.engsoft2.seyfert.domain.form.SolicitacaoForm;
 public interface SolicitacaoService {
     SolicitacaoDTO cadastrar(SolicitacaoForm solicitacao);
     Page<SolicitacaoDTO> listarSolicitacoesPaciente(UUID uuidPaciente, LocalDate dataParaAtendimento, String nomeEspecialidade, Pageable pageable);
+    Page<SolicitacaoDTO> listarSolicitacoesMedico(UUID uuidMedico, LocalDate dataParaAtendimento, String nomeEspecialidade, Pageable pageable);
 }
