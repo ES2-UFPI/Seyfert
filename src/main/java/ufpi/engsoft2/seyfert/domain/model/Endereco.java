@@ -1,5 +1,6 @@
 package ufpi.engsoft2.seyfert.domain.model;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,6 +19,7 @@ import ufpi.engsoft2.seyfert.domain.enums.TipoEndereco;
 @Data
 @Table(name = "tb_endereco")
 @Entity
+@Embeddable
 public class Endereco extends EntityBase {
     private String cidade;
     private String bairro;

@@ -19,4 +19,5 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long>{
     Page<Proposta> findByMedicoUuidAndDataAtendimento(UUID medicoUuid, LocalDate situacao, Pageable paginacao);
     Page<Proposta> findByMedicoUuidAndSituacao(UUID medicoUuid, SituacaoProposta situacao, Pageable paginacao);
     Page<Proposta> findByDataAtendimento(LocalDate dataAtendimento, Pageable paginacao);
+    Proposta findByUuid(UUID propostaUuid);
 }

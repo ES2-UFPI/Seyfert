@@ -22,4 +22,6 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     Page<Solicitacao> findByEspecialidadeMedicaIn(List<EspecialidadeMedica> especialidades, Pageable pageable);
     Page<Solicitacao> findByEspecialidadeMedicaInAndDataParaAtendimento(List<EspecialidadeMedica> especialidades, LocalDate dataParaAtendimento, Pageable pageable);
     Page<Solicitacao> findByEspecialidadeMedicaUuidAndDataParaAtendimento(UUID uuidEspecialidade, LocalDate dataParaAtendimento, Pageable pageable);
+
+    Solicitacao findByUuid(UUID solicitacaoUuid);
 }
