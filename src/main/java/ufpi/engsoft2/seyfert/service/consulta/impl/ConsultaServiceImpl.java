@@ -1,8 +1,11 @@
 package ufpi.engsoft2.seyfert.service.consulta.impl;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -10,8 +13,11 @@ import lombok.NoArgsConstructor;
 import ufpi.engsoft2.seyfert.domain.dto.ConsultaDTO;
 import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
+import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
 import ufpi.engsoft2.seyfert.domain.model.Consulta;
 import ufpi.engsoft2.seyfert.domain.repository.ConsultaRepository;
+import ufpi.engsoft2.seyfert.domain.repository.MedicoRepository;
+import ufpi.engsoft2.seyfert.domain.repository.PacienteRepository;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaMapper;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaService;
 import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
@@ -21,6 +27,12 @@ import ufpi.engsoft2.seyfert.shared.exception.EntityNotFoundException;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConsultaServiceImpl implements ConsultaService {
+    @Autowired
+    private PacienteRepository pacienteRepository;
+
+    @Autowired
+    private MedicoRepository medicoRepository;
+
     @Autowired
     private ConsultaRepository consultaRepository;
 
@@ -33,8 +45,57 @@ public class ConsultaServiceImpl implements ConsultaService {
         if (consulta == null) {
             throw new EntityNotFoundException("Consulta não encontrada");
         }
-
         return consultaMapper.toDto(consulta);
+    }
+
+    @Override
+    public Page<ConsultaDTO> listarConsultasPaciente(UUID pacienteUuid, SituacaoConsulta situacaoConsulta,
+        SituacaoPagamento situacaoPagamento, LocalDate dataAtendimento, Pageable pageable) {
+        if (pacienteUuid == null) {
+            throw new BussinesRuleException("O uuid de paciente não pode ser nulo");
+        }
+        if (pacienteRepository.findByUuid(pacienteUuid) == null) {
+            throw new EntityNotFoundException("Paciente não encontrado");
+        }
+        Page<Consulta> pageConsultas;
+        if (situacaoConsulta == null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findByPacienteUuid(pacienteUuid, pageable);
+        } else if (situacaoConsulta == null && dataAtendimento != null) {
+            pageConsultas = consultaRepository.findByPacienteUuidAndDataAtendimento(pacienteUuid, dataAtendimento, pageable);
+        } else if (situacaoConsulta != null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findByPacienteUuidAndSituacao(pacienteUuid, situacaoConsulta, pageable);
+        } else {
+            pageConsultas = consultaRepository.findByPacienteUuidAndSituacaoAndDataAtendimento(pacienteUuid, situacaoConsulta, dataAtendimento, pageable);
+        }
+        if (pageConsultas.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma consulta encontrada");
+        }
+        return pageConsultas.map(consultaMapper::toDto);
+    }
+
+    @Override
+    public Page<ConsultaDTO> listarConsultasMedico(UUID medicoUuid, SituacaoConsulta situacaoConsulta,
+            SituacaoPagamento situacaoPagamento, LocalDate dataAtendimento, Pageable pageable) {
+        if (medicoUuid == null) {
+            throw new BussinesRuleException("O uuid de medico não pode ser nulo");
+        }
+        if (medicoRepository.findByUuid(medicoUuid) == null) {
+            throw new EntityNotFoundException("Médico não encontrado");
+        }
+        Page<Consulta> pageConsultas;
+        if (situacaoConsulta == null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findByMedicoUuid(medicoUuid, pageable);
+        } else if (situacaoConsulta == null && dataAtendimento != null) {
+            pageConsultas = consultaRepository.findByMedicoUuidAndDataAtendimento(medicoUuid, dataAtendimento, pageable);
+        } else if (situacaoConsulta != null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findByMedicoUuidAndSituacao(medicoUuid, situacaoConsulta, pageable);
+        } else {
+            pageConsultas = consultaRepository.findByMedicoUuidAndSituacaoAndDataAtendimento(medicoUuid, situacaoConsulta, dataAtendimento, pageable);
+        }
+        if (pageConsultas.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma consulta encontrada");
+        }
+        return pageConsultas.map(consultaMapper::toDto);
     }
 
     @Override
@@ -57,8 +118,5 @@ public class ConsultaServiceImpl implements ConsultaService {
 
            return new ResponsePadraoParaAtualizacaoRecursoDTO("Consulta validada");
        }
-
-        
     }
-    
 }
