@@ -58,16 +58,24 @@ public class ConsultaServiceImpl implements ConsultaService {
             throw new EntityNotFoundException("Paciente não encontrado");
         }
         Page<Consulta> pageConsultas;
-        if (situacaoConsulta == null && dataAtendimento == null) {
+        if (situacaoConsulta == null && situacaoPagamento == null && dataAtendimento == null) {
             pageConsultas = consultaRepository.findByPacienteUuid(pacienteUuid, pageable);
-        } else if (situacaoConsulta == null && dataAtendimento != null) {
+        } else if (situacaoConsulta == null && situacaoPagamento == null && dataAtendimento != null) {
             pageConsultas = consultaRepository.findByPacienteUuidAndDataAtendimento(pacienteUuid, dataAtendimento, pageable);
-        } else if (situacaoConsulta != null && dataAtendimento == null) {
-            pageConsultas = consultaRepository.findByPacienteUuidAndSituacao(pacienteUuid, situacaoConsulta, pageable);
+        } else if (situacaoConsulta == null && situacaoPagamento != null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findByPagamentoConsulta_SituacaoAndPacienteUuid(situacaoPagamento, pacienteUuid, pageable);
+        } else if (situacaoConsulta != null && situacaoPagamento == null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findBySituacaoAndPacienteUuid(situacaoConsulta, pacienteUuid, pageable);
+        } else if (situacaoConsulta != null && situacaoPagamento != null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findByPagamentoConsulta_SituacaoAndSituacaoAndPacienteUuid(situacaoPagamento, situacaoConsulta, pacienteUuid, pageable);
+        } else if (situacaoConsulta == null && situacaoPagamento != null && dataAtendimento != null) {
+            pageConsultas = consultaRepository.findByPagamentoConsulta_SituacaoAndPacienteUuidAndDataAtendimento(situacaoPagamento, pacienteUuid, dataAtendimento, pageable);
+        } else if (situacaoConsulta != null && situacaoPagamento == null && dataAtendimento != null) {
+            pageConsultas = consultaRepository.findBySituacaoAndPacienteUuidAndDataAtendimento(situacaoConsulta, pacienteUuid, dataAtendimento, pageable);
         } else {
-            pageConsultas = consultaRepository.findByPacienteUuidAndSituacaoAndDataAtendimento(pacienteUuid, situacaoConsulta, dataAtendimento, pageable);
+            pageConsultas = consultaRepository.findByPagamentoConsulta_SituacaoAndSituacaoAndPacienteUuidAndDataAtendimento(situacaoPagamento, situacaoConsulta, pacienteUuid, dataAtendimento, pageable);
         }
-        if (pageConsultas.isEmpty()) {
+            if (pageConsultas.isEmpty()) {
             throw new EntityNotFoundException("Nenhuma consulta encontrada");
         }
         return pageConsultas.map(consultaMapper::toDto);
@@ -83,14 +91,22 @@ public class ConsultaServiceImpl implements ConsultaService {
             throw new EntityNotFoundException("Médico não encontrado");
         }
         Page<Consulta> pageConsultas;
-        if (situacaoConsulta == null && dataAtendimento == null) {
+        if (situacaoConsulta == null && situacaoPagamento == null && dataAtendimento == null) {
             pageConsultas = consultaRepository.findByMedicoUuid(medicoUuid, pageable);
-        } else if (situacaoConsulta == null && dataAtendimento != null) {
+        } else if (situacaoConsulta == null && situacaoPagamento == null && dataAtendimento != null) {
             pageConsultas = consultaRepository.findByMedicoUuidAndDataAtendimento(medicoUuid, dataAtendimento, pageable);
-        } else if (situacaoConsulta != null && dataAtendimento == null) {
-            pageConsultas = consultaRepository.findByMedicoUuidAndSituacao(medicoUuid, situacaoConsulta, pageable);
+        } else if (situacaoConsulta == null && situacaoPagamento != null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findByPagamentoConsulta_SituacaoAndMedicoUuid(situacaoPagamento, medicoUuid, pageable);
+        } else if (situacaoConsulta != null && situacaoPagamento == null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findBySituacaoAndMedicoUuid(situacaoConsulta, medicoUuid, pageable);
+        } else if (situacaoConsulta != null && situacaoPagamento != null && dataAtendimento == null) {
+            pageConsultas = consultaRepository.findByPagamentoConsulta_SituacaoAndSituacaoAndMedicoUuid(situacaoPagamento, situacaoConsulta, medicoUuid, pageable);
+        } else if (situacaoConsulta == null && situacaoPagamento != null && dataAtendimento != null) {
+            pageConsultas = consultaRepository.findByPagamentoConsulta_SituacaoAndMedicoUuidAndDataAtendimento(situacaoPagamento, medicoUuid, dataAtendimento, pageable);
+        } else if (situacaoConsulta != null && situacaoPagamento == null && dataAtendimento != null) {
+            pageConsultas = consultaRepository.findBySituacaoAndMedicoUuidAndDataAtendimento(situacaoConsulta, medicoUuid, dataAtendimento, pageable);
         } else {
-            pageConsultas = consultaRepository.findByMedicoUuidAndSituacaoAndDataAtendimento(medicoUuid, situacaoConsulta, dataAtendimento, pageable);
+            pageConsultas = consultaRepository.findByPagamentoConsulta_SituacaoAndSituacaoAndMedicoUuidAndDataAtendimento(situacaoPagamento, situacaoConsulta, medicoUuid, dataAtendimento, pageable);
         }
         if (pageConsultas.isEmpty()) {
             throw new EntityNotFoundException("Nenhuma consulta encontrada");
