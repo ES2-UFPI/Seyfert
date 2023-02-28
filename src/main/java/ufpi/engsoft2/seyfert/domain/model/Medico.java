@@ -22,6 +22,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ufpi.engsoft2.seyfert.domain.enums.Sexo;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoMedico;
+import ufpi.engsoft2.seyfert.domain.enums.TipoEndereco;
+import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -79,5 +81,15 @@ public class Medico extends EntityBase {
     @PrePersist
     public void gerarNomeCompleto(){
         this.nomeCompleto = this.nome+" "+this.sobrenome;
+    }
+
+    public Endereco getEnderecoAtendimento(){
+        for(Endereco endereco : enderecos){
+            if(endereco.getTipoEndereco().equals(TipoEndereco.COMERCIAL)){
+                return endereco;
+            }
+        }
+
+        throw new BussinesRuleException("Médico sem endereço de atendimento");
     }
 }

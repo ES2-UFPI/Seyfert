@@ -33,6 +33,7 @@ public class SolicitacaoController {
     @PostMapping
     public ResponseEntity<SolicitacaoDTO> cadastrarSolicitacao(@RequestBody SolicitacaoForm solicitacao,
             UriComponentsBuilder uriComponentsBuilder) {
+
         SolicitacaoDTO solicitacaoDTO = solicitacaoService.cadastrar(solicitacao);
 
         URI uri = uriComponentsBuilder.path("/solicitacao/{id}").buildAndExpand(solicitacaoDTO.getUuid()).toUri();
