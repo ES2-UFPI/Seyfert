@@ -135,4 +135,13 @@ public class ConsultaServiceImpl implements ConsultaService {
            return new ResponsePadraoParaAtualizacaoRecursoDTO("Consulta validada");
        }
     }
+
+    @Override
+    public ConsultaDTO buscarConsulta(UUID uuid) {
+        Consulta consulta = consultaRepository.findByUuid(uuid);
+        if (consulta == null) {
+            throw new EntityNotFoundException("Consulta não encontrada");
+        }
+        return consultaMapper.toDto(consulta);
+    }
 }
