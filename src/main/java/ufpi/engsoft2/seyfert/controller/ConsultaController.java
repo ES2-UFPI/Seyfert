@@ -1,10 +1,9 @@
 package ufpi.engsoft2.seyfert.controller;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ufpi.engsoft2.seyfert.domain.dto.ConsultaDTO;
 import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
-import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
-import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaService;
 
 @RestController
@@ -37,5 +34,10 @@ public class ConsultaController {
     public ResponseEntity<ResponsePadraoParaAtualizacaoRecursoDTO> validarConsulta(@PathVariable UUID consultaUuid, @RequestParam String codigo){
 
         return ResponseEntity.ok(consultaService.validarConsulta(consultaUuid, codigo));
+    }
+
+    @PatchMapping("/{consultaUuid}/cancelar")
+    public ResponseEntity<ResponsePadraoParaAtualizacaoRecursoDTO> cancelarConsulta(@PathVariable UUID consultaUuid){
+        return ResponseEntity.ok(consultaService.cancelarConsulta(consultaUuid));
     }
 }

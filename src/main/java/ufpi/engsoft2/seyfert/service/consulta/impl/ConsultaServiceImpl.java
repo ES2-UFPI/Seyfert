@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -59,6 +60,34 @@ public class ConsultaServiceImpl implements ConsultaService {
        }
 
         
+    }
+
+    @Override
+    @Transactional
+    public ResponsePadraoParaAtualizacaoRecursoDTO cancelarConsulta(UUID consultaUuid) {
+        Consulta consulta = consultaRepository.findByUuid(consultaUuid);
+        if (consulta == null) {
+            throw new EntityNotFoundException("Nenhuma consulta encontrada para o id "+consultaUuid);
+        }
+        if (consulta.getSituacao() == SituacaoConsulta.CANCELADA) {
+            throw new BussinesRuleException("Consulta já está cancelada");
+        }
+        if (consulta.getSituacao() == SituacaoConsulta.FINALIZADA) {
+            throw new BussinesRuleException("Não é possível cancelar uma consulta que já foi finalizada");
+        }
+        if (consulta.getSituacao() == SituacaoConsulta.VALIDADA) {
+            throw new BussinesRuleException("Não é possível cancelar uma consulta que já foi validada");
+        }
+        if (consulta.getSituacao() == SituacaoConsulta.ESTORNADA) {
+            throw new BussinesRuleException("Não é possível cancelar uma consulta que já foi estornada");
+        }
+        if (consulta.getSituacao() == SituacaoConsulta.VENCIDA) {
+            throw new BussinesRuleException("Não é possível cancelar uma consulta que está vencida");
+        }
+        consulta.setSituacao(SituacaoConsulta.CANCELADA);
+        consultaRepository.save(consulta);
+
+        return new ResponsePadraoParaAtualizacaoRecursoDTO("Consulta cancelada");
     }
     
 }

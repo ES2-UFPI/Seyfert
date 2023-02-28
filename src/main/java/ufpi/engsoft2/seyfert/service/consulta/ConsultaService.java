@@ -7,5 +7,6 @@ import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 
 public interface ConsultaService {
     ConsultaDTO getConsulta(UUID uuid);
+    ResponsePadraoParaAtualizacaoRecursoDTO cancelarConsulta(UUID consultaUuid);
     ResponsePadraoParaAtualizacaoRecursoDTO validarConsulta(UUID consultaUuid, String codigoValidacao);
 }
