@@ -20,6 +20,7 @@ import ufpi.engsoft2.seyfert.domain.dto.ConsultaDTO;
 import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
+import ufpi.engsoft2.seyfert.domain.form.HorarioDisponivelMedicoForm;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaService;
 
 @RestController
@@ -72,5 +73,15 @@ public class ConsultaController {
     public ResponseEntity<ResponsePadraoParaAtualizacaoRecursoDTO> adicionarDetalhes(@PathVariable UUID consultaUuid, @RequestParam String detalhes){
 
         return ResponseEntity.ok(consultaService.adicionarDetalhes(consultaUuid, detalhes));
+    }
+
+    @PostMapping("/horarios/{uuidMedico}")
+    public ResponseEntity<ResponsePadraoParaAtualizacaoRecursoDTO> cadastrarHorarioDisponivel(
+        @PathVariable UUID uuidMedico,
+        @RequestBody List<HorarioDisponivelMedicoForm> horarios){
+
+        ResponsePadraoParaAtualizacaoRecursoDTO resposta = consultaService.cadastrarHorarioDisponivel(uuidMedico, horarios);
+
+        return ResponseEntity.created().body(resposta);
     }
 }

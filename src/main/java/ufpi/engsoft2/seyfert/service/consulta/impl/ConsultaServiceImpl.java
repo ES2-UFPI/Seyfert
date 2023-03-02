@@ -14,7 +14,9 @@ import ufpi.engsoft2.seyfert.domain.dto.ConsultaDTO;
 import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
+import ufpi.engsoft2.seyfert.domain.form.HorarioDisponivelMedicoForm;
 import ufpi.engsoft2.seyfert.domain.model.Consulta;
+import ufpi.engsoft2.seyfert.domain.model.HorarioDisponivelMedico;
 import ufpi.engsoft2.seyfert.domain.repository.ConsultaRepository;
 import ufpi.engsoft2.seyfert.domain.repository.MedicoRepository;
 import ufpi.engsoft2.seyfert.domain.repository.PacienteRepository;
@@ -28,6 +30,9 @@ import ufpi.engsoft2.seyfert.domain.model.Medico;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConsultaServiceImpl implements ConsultaService {
+    @Autowired
+    private HorarioDisponivelMapper horarioDisponivelMapper;
+
     @Autowired
     private PacienteRepository pacienteRepository;
 
@@ -137,14 +142,16 @@ public class ConsultaServiceImpl implements ConsultaService {
        }
     }
 
-    public void cadastrarHorarioDisponivel(UUID medicoUuid, HorarioDisponivelMedico horarioDisponivel){
-        Medico medico = medicoRepository.findById(medicoUuid);
+    public ResponsePadraoParaAtualizacaoRecursoDTO cadastrarHorarioDisponivel(UUID medicoUuid, HorarioDisponivelMedicoForm horarioForm){
+        Medico medico = medicoRepository.findByUuid(medicoUuid).orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+
+        HorarioDisponivelMedico horarioDisponivel = HorarioDisponivelMapper.toModel(horarioForm);
 
         List<HorarioDisponivelMedico> horarios = medico.getHorariosDisponiveis();
 
         for (HorarioDisponivelMedico horario : horarios) {
             if (horario.equals(horarioDisponivel)) {
-                throw new BussinesRuleException("Horario já cadastrado");
+                throw new BussinesRuleException("Horario já cadastrado.");
             }
         }
 
@@ -153,6 +160,8 @@ public class ConsultaServiceImpl implements ConsultaService {
         medico.setHorariosDisponiveis(horarios);
 
         medicoRepository.save(medico);
+
+        return ResponsePadraoParaAtualizacaoRecursoDTO("Horario cadastrado com sucesso.");
     }
 
     @Override
@@ -160,7 +169,7 @@ public class ConsultaServiceImpl implements ConsultaService {
        Consulta consulta = consultaRepository.findByUuid(consultaUuid);
 
        if(detalhes == null){
-           throw new BussinesRuleException("Os detalhes da consulta não pode ser vazia.");
+           throw new BussinesRuleException("Os detalhes da consulta não podem ser vazia.");
        }
 
        if(consulta == null){
