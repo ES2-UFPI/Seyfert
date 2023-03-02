@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import ufpi.engsoft2.seyfert.domain.model.Medico;
 
-public interface MedicoRepository extends JpaRepository<Medico, UUID>{
+public interface MedicoRepository extends JpaRepository<Medico, Long>{
     Medico findByUuid(UUID uuidMedico);
 }
