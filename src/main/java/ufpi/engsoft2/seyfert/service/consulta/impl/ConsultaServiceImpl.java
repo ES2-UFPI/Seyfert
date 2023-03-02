@@ -1,6 +1,7 @@
 package ufpi.engsoft2.seyfert.service.consulta.impl;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
 import ufpi.engsoft2.seyfert.domain.model.Consulta;
+import ufpi.engsoft2.seyfert.domain.model.HorarioDisponivelMedico;
 import ufpi.engsoft2.seyfert.domain.repository.ConsultaRepository;
 import ufpi.engsoft2.seyfert.domain.repository.MedicoRepository;
 import ufpi.engsoft2.seyfert.domain.repository.PacienteRepository;
@@ -138,7 +140,7 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     public void cadastrarHorarioDisponivel(UUID medicoUuid, HorarioDisponivelMedico horarioDisponivel){
-        Medico medico = medicoRepository.findById(medicoUuid);
+        Medico medico = medicoRepository.findByUuid(medicoUuid);
 
         List<HorarioDisponivelMedico> horarios = medico.getHorariosDisponiveis();
 
