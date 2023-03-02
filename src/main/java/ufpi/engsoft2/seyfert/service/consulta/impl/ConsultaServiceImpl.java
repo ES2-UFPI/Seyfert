@@ -135,4 +135,26 @@ public class ConsultaServiceImpl implements ConsultaService {
            return new ResponsePadraoParaAtualizacaoRecursoDTO("Consulta validada");
        }
     }
+
+    @Override
+    public ResponsePadraoParaAtualizacaoRecursoDTO adicionarDetalhes(UUID consultaUuid, String detalhes) {
+       Consulta consulta = consultaRepository.findByUuid(consultaUuid);
+
+       if(detalhes == null){
+           throw new BussinesRuleException("Os detalhes da consulta não pode ser vazia.");
+       }
+
+       if(consulta == null){
+            throw new EntityNotFoundException("Nenhuma consulta encontrada com o id "+consultaUuid);
+       }
+
+       if(!consulta.getSituacao().equals(SituacaoConsulta.VALIDADA)){
+            throw new BussinesRuleException("A consulta não encontra-se validada para preencher detalhes");
+       }
+
+       consulta.setDescricaoMedica(detalhes);
+       consultaRepository.save(consulta);
+       
+       return new ResponsePadraoParaAtualizacaoRecursoDTO("Detalhes adicionados com sucesso na consulta");
+    }
 }

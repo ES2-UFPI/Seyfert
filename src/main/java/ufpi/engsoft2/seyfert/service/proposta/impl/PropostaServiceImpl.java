@@ -1,5 +1,6 @@
 package ufpi.engsoft2.seyfert.service.proposta.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +100,10 @@ public class PropostaServiceImpl implements PropostaService{
 
             if(proposta.getHoraInicial().isAfter(proposta.getHoraFinal())){
                 throw new BussinesRuleException("A proposta tem o horário inicial posterior ao horário final previsto");
+            }
+
+            if(proposta.getValor().compareTo(BigDecimal.ZERO) <= 0) {
+                throw new BussinesRuleException("Não pode ter seu valor negativo e nem igual a ZERO");
             }
 
             proposta.setSituacao(SituacaoProposta.CRIADA);
