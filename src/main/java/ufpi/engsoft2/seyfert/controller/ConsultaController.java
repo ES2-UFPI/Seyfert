@@ -1,9 +1,13 @@
 package ufpi.engsoft2.seyfert.controller;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ufpi.engsoft2.seyfert.domain.dto.ConsultaDTO;
 import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
+import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
+import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaService;
 
 @RestController
@@ -28,6 +34,32 @@ public class ConsultaController {
         ConsultaDTO consultaDTO = consultaService.getConsulta(uuid);
 
         return ResponseEntity.ok(consultaDTO);
+    }
+
+    @GetMapping("/paciente/{pacienteUuid}")
+    public ResponseEntity<Page<ConsultaDTO>> listarConsultasPaciente(
+            @PathVariable UUID pacienteUuid,
+            @RequestParam(required = false) SituacaoConsulta situacaoConsulta,
+            @RequestParam(required = false) SituacaoPagamento situacaoPagamento,
+            @RequestParam(required = false) LocalDate dataAtendimento,
+            @PageableDefault(sort = "dataAtendimento", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable pageable
+            ){
+        Page<ConsultaDTO> consultas = consultaService.listarConsultasPaciente(pacienteUuid, situacaoConsulta, situacaoPagamento, dataAtendimento, pageable);
+
+        return ResponseEntity.ok(consultas);
+    }
+
+    @GetMapping("/medico/{medicoUuid}")
+    public ResponseEntity<Page<ConsultaDTO>> listarConsultasMedico(
+            @PathVariable UUID medicoUuid,
+            @RequestParam(required = false) SituacaoConsulta situacaoConsulta,
+            @RequestParam(required = false) SituacaoPagamento situacaoPagamento,
+            @RequestParam(required = false) LocalDate dataAtendimento,
+            @PageableDefault(sort = "dataAtendimento", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable pageable
+            ){
+        Page<ConsultaDTO> consultas = consultaService.listarConsultasMedico(medicoUuid, situacaoConsulta, situacaoPagamento, dataAtendimento, pageable);
+
+        return ResponseEntity.ok(consultas);
     }
 
     @PatchMapping("/{consultaUuid}")
