@@ -137,7 +137,6 @@ public class ConsultaServiceImpl implements ConsultaService {
        }
     }
 
-    //Cadastro de horarios disponiveis
     public void cadastrarHorarioDisponivel(UUID medicoUuid, HorarioDisponivelMedico horarioDisponivel){
         Medico medico = medicoRepository.findById(medicoUuid);
 
