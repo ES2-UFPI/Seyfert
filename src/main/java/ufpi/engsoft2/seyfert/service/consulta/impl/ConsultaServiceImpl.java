@@ -135,4 +135,9 @@ public class ConsultaServiceImpl implements ConsultaService {
            return new ResponsePadraoParaAtualizacaoRecursoDTO("Consulta validada");
        }
     }
+
+    //Cadastro de horarios disponiveis
+    public void cadastrarHorarioDisponivel(HorarioDisponivelMedico horario){
+        
+    }
 }
