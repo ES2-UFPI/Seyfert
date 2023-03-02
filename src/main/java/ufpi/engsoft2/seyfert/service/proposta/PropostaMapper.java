@@ -13,7 +13,7 @@ import ufpi.engsoft2.seyfert.shared.mapper.EntityMapper;
     componentModel = "spring",
     nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE
 )
-public interface PropostaServiceMapper extends EntityMapper<PropostaDTO, Proposta, PropostaForm>{
+public interface PropostaMapper extends EntityMapper<PropostaDTO, Proposta, PropostaForm>{
     
     @Mappings({
         @Mapping(target = "nomeCompletoMedico", expression = "java(entity.getMedico().getNomeCompleto())"),

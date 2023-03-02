@@ -6,6 +6,7 @@ public class GeradorCodigoValidacaoConsulta {
     private static final int VALOR_DO_PRIMEIRO_CARACTERE = 65;
     private static final int QUANTIDADE_DE_LETRAS = 26;
     private static final int VALOR_MAXIMO_DE_NUMEROS = 10;
+    private String exemploDeCodigo = "4F-2D-6A-4N";
 
     private static char transformeNumeroEmCaracter(int numero){
         return (char)numero;
