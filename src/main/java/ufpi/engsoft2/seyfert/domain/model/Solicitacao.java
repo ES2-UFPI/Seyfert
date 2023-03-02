@@ -2,6 +2,7 @@ package ufpi.engsoft2.seyfert.domain.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -50,7 +51,7 @@ public class Solicitacao extends EntityBase {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "solicitacao_id")
-    private List<Proposta> propostas;
+    private List<Proposta> propostas = new ArrayList();
 
     // private EspecialidadeMedica especialidadeMedica;
     //Deve está relacionada com uma consulta, caso seja gerada
