@@ -22,6 +22,7 @@ import ufpi.engsoft2.seyfert.service.consulta.ConsultaMapper;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaService;
 import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
 import ufpi.engsoft2.seyfert.shared.exception.EntityNotFoundException;
+import ufpi.engsoft2.seyfert.domain.model.Medico;
 
 @Service
 @AllArgsConstructor
@@ -153,7 +154,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
         medicoRepository.save(medico);
     }
-    
+
     @Override
     public ResponsePadraoParaAtualizacaoRecursoDTO adicionarDetalhes(UUID consultaUuid, String detalhes) {
        Consulta consulta = consultaRepository.findByUuid(consultaUuid);
