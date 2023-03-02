@@ -67,4 +67,10 @@ public class ConsultaController {
 
         return ResponseEntity.ok(consultaService.validarConsulta(consultaUuid, codigo));
     }
+
+    @PatchMapping("/{consultaUuid}/detalhes/adicionar")
+    public ResponseEntity<ResponsePadraoParaAtualizacaoRecursoDTO> adicionarDetalhes(@PathVariable UUID consultaUuid, @RequestParam String detalhes){
+
+        return ResponseEntity.ok(consultaService.adicionarDetalhes(consultaUuid, detalhes));
+    }
 }

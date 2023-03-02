@@ -16,4 +16,5 @@ public interface ConsultaService {
     Page<ConsultaDTO> listarConsultasPaciente(UUID pacienteUiud, SituacaoConsulta situacaoConsulta, SituacaoPagamento situacaoPagamento, LocalDate dataAtendimento, Pageable pageable);
     Page<ConsultaDTO> listarConsultasMedico(UUID medicoUuid, SituacaoConsulta situacaoConsulta, SituacaoPagamento situacaoPagamento, LocalDate dataAtendimento, Pageable pageable);
     ResponsePadraoParaAtualizacaoRecursoDTO validarConsulta(UUID consultaUuid, String codigoValidacao);
+    ResponsePadraoParaAtualizacaoRecursoDTO adicionarDetalhes(UUID consultaUuid, String detalhes);
 }
