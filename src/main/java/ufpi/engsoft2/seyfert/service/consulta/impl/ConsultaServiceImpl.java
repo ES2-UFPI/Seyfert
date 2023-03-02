@@ -1,6 +1,7 @@
 package ufpi.engsoft2.seyfert.service.consulta.impl;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,10 +143,15 @@ public class ConsultaServiceImpl implements ConsultaService {
        }
     }
 
+<<<<<<< HEAD
     public ResponsePadraoParaAtualizacaoRecursoDTO cadastrarHorarioDisponivel(UUID medicoUuid, HorarioDisponivelMedicoForm horarioForm){
         Medico medico = medicoRepository.findByUuid(medicoUuid).orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
 
         HorarioDisponivelMedico horarioDisponivel = HorarioDisponivelMapper.toModel(horarioForm);
+=======
+    public void cadastrarHorarioDisponivel(UUID medicoUuid, HorarioDisponivelMedico horarioDisponivel){
+        Medico medico = medicoRepository.findByUuid(medicoUuid);
+>>>>>>> 3c33e3c1a0b49b2453ddd81de7e7d1f820019328
 
         List<HorarioDisponivelMedico> horarios = medico.getHorariosDisponiveis();
 
