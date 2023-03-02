@@ -15,6 +15,6 @@ import ufpi.engsoft2.seyfert.shared.mapper.EntityNoFormMapper;
     componentModel = "spring",
     nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE
 )
-public interface HorarioDisponivelMedico extends EntityNoDTOMapper<HorarioDisponivelMedicoForm> {
+public interface HorarioDisponivelMapper extends EntityNoDTOMapper<HorarioDisponivelMedicoForm> {
     
 }
