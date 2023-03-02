@@ -23,6 +23,7 @@ import ufpi.engsoft2.seyfert.domain.repository.MedicoRepository;
 import ufpi.engsoft2.seyfert.domain.repository.PacienteRepository;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaMapper;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaService;
+import ufpi.engsoft2.seyfert.service.consulta.HorarioDisponivelMapper;
 import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
 import ufpi.engsoft2.seyfert.shared.exception.EntityNotFoundException;
 import ufpi.engsoft2.seyfert.domain.model.Medico;
@@ -144,9 +145,12 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     public ResponsePadraoParaAtualizacaoRecursoDTO cadastrarHorarioDisponivel(UUID medicoUuid, HorarioDisponivelMedicoForm horarioForm){
-        Medico medico = medicoRepository.findByUuid(medicoUuid).orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+        Medico medico = medicoRepository.findByUuid(medicoUuid);
+        if (medico == null) {
+            throw new EntityNotFoundException("Médico não encontrado");
+        }
 
-        HorarioDisponivelMedico horarioDisponivel = HorarioDisponivelMapper.toModel(horarioForm);
+        HorarioDisponivelMedico horarioDisponivel = horarioDisponivelMapper.toModel(horarioForm);
 
         List<HorarioDisponivelMedico> horarios = medico.getHorariosDisponiveis();
 
@@ -162,7 +166,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
         medicoRepository.save(medico);
 
-        return ResponsePadraoParaAtualizacaoRecursoDTO("Horario cadastrado com sucesso.");
+        return new ResponsePadraoParaAtualizacaoRecursoDTO("Horário cadastrado com sucesso");
     }
 
     @Override
