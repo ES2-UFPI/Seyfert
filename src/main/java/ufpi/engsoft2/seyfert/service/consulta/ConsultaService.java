@@ -13,6 +13,7 @@ import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
 
 public interface ConsultaService {
     ConsultaDTO getConsulta(UUID uuid);
+    ResponsePadraoParaAtualizacaoRecursoDTO cancelarConsulta(UUID consultaUuid);
     Page<ConsultaDTO> listarConsultasPaciente(UUID pacienteUiud, SituacaoConsulta situacaoConsulta, SituacaoPagamento situacaoPagamento, LocalDate dataAtendimento, Pageable pageable);
     Page<ConsultaDTO> listarConsultasMedico(UUID medicoUuid, SituacaoConsulta situacaoConsulta, SituacaoPagamento situacaoPagamento, LocalDate dataAtendimento, Pageable pageable);
     ResponsePadraoParaAtualizacaoRecursoDTO validarConsulta(UUID consultaUuid, String codigoValidacao);
