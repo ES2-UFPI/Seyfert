@@ -1,6 +1,7 @@
 package ufpi.engsoft2.seyfert.service.consulta.impl;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +16,26 @@ import ufpi.engsoft2.seyfert.domain.dto.ConsultaDTO;
 import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
+import ufpi.engsoft2.seyfert.domain.form.HorarioDisponivelMedicoForm;
 import ufpi.engsoft2.seyfert.domain.model.Consulta;
+import ufpi.engsoft2.seyfert.domain.model.HorarioDisponivelMedico;
 import ufpi.engsoft2.seyfert.domain.repository.ConsultaRepository;
 import ufpi.engsoft2.seyfert.domain.repository.MedicoRepository;
 import ufpi.engsoft2.seyfert.domain.repository.PacienteRepository;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaMapper;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaService;
+import ufpi.engsoft2.seyfert.service.consulta.HorarioDisponivelMapper;
 import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
 import ufpi.engsoft2.seyfert.shared.exception.EntityNotFoundException;
+import ufpi.engsoft2.seyfert.domain.model.Medico;
 
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConsultaServiceImpl implements ConsultaService {
+    @Autowired
+    private HorarioDisponivelMapper horarioDisponivelMapper;
+
     @Autowired
     private PacienteRepository pacienteRepository;
 
@@ -137,12 +145,37 @@ public class ConsultaServiceImpl implements ConsultaService {
        }
     }
 
+    public ResponsePadraoParaAtualizacaoRecursoDTO cadastrarHorarioDisponivel(UUID medicoUuid, HorarioDisponivelMedicoForm horarioForm){
+        Medico medico = medicoRepository.findByUuid(medicoUuid);
+        if (medico == null) {
+            throw new EntityNotFoundException("Médico não encontrado");
+        }
+
+        HorarioDisponivelMedico horarioDisponivel = horarioDisponivelMapper.toModel(horarioForm);
+
+        List<HorarioDisponivelMedico> horarios = medico.getHorariosDisponiveis();
+
+        for (HorarioDisponivelMedico horario : horarios) {
+            if (horario.equals(horarioDisponivel)) {
+                throw new BussinesRuleException("Horario já cadastrado.");
+            }
+        }
+
+        horarios.add(horarioDisponivel);
+
+        medico.setHorariosDisponiveis(horarios);
+
+        medicoRepository.save(medico);
+
+        return new ResponsePadraoParaAtualizacaoRecursoDTO("Horário cadastrado com sucesso");
+    }
+
     @Override
     public ResponsePadraoParaAtualizacaoRecursoDTO adicionarDetalhes(UUID consultaUuid, String detalhes) {
        Consulta consulta = consultaRepository.findByUuid(consultaUuid);
 
        if(detalhes == null){
-           throw new BussinesRuleException("Os detalhes da consulta não pode ser vazia.");
+           throw new BussinesRuleException("Os detalhes da consulta não podem ser vazia.");
        }
 
        if(consulta == null){
