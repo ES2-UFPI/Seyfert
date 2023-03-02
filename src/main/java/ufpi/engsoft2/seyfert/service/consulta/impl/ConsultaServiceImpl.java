@@ -15,6 +15,7 @@ import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
 import ufpi.engsoft2.seyfert.domain.model.Consulta;
+import ufpi.engsoft2.seyfert.domain.model.Medico;
 import ufpi.engsoft2.seyfert.domain.repository.ConsultaRepository;
 import ufpi.engsoft2.seyfert.domain.repository.MedicoRepository;
 import ufpi.engsoft2.seyfert.domain.repository.PacienteRepository;
@@ -137,7 +138,15 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     //Cadastro de horarios disponiveis
-    public void cadastrarHorarioDisponivel(HorarioDisponivelMedico horario){
-        
+    public void cadastrarHorarioDisponivel(UUID medicoUuid, HorarioDisponivelMedico horario){
+        Medico medico = medicoRepository.findById(medicoUuid);
+
+        List<HorarioDisponivelMedico> horarios = medico.getHorariosDisponiveis();
+
+        horarios.add(horario);
+
+        medico.setHorariosDisponiveis(horarios);
+
+        medicoRepository.save(medico);
     }
 }
