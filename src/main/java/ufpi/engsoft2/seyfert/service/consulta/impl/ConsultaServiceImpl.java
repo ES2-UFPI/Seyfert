@@ -220,4 +220,26 @@ public class ConsultaServiceImpl implements ConsultaService {
         return new ResponsePadraoParaAtualizacaoRecursoDTO("Consulta cancelada");
     }
     
+    public List<ConsultaDTO> listarHistoricoConsultas(UUID pacienteUuid) {
+        // Verifica se o paciente existe
+        Paciente paciente = pacienteRepository.findByUuid(pacienteUuid);
+        if (paciente == null) {
+            throw new EntityNotFoundException("Paciente não encontrado");
+        }
+        
+        // Busca as consultas
+        List<Consulta> consultas = consultaRepository.findByPacienteUuid(pacienteUuid);
+        
+        // Verifica se existem consultas
+        if (consultas.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma consulta encontrada para o paciente");
+        }
+        
+        // Converte as consultas em DTOs
+        List<ConsultaDTO> consultasDTO = consultas.stream()
+                .map(consultaMapper::toDto)
+                .collect(Collectors.toList());
+        
+        return consultasDTO;
+    }
 }
