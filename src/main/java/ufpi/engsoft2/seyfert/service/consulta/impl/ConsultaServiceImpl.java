@@ -16,6 +16,7 @@ import ufpi.engsoft2.seyfert.domain.dto.ConsultaDTO;
 import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
+import ufpi.engsoft2.seyfert.domain.form.ConsultaForm;
 import ufpi.engsoft2.seyfert.domain.form.HorarioDisponivelMedicoForm;
 import ufpi.engsoft2.seyfert.domain.model.Consulta;
 import ufpi.engsoft2.seyfert.domain.model.HorarioDisponivelMedico;
@@ -28,6 +29,7 @@ import ufpi.engsoft2.seyfert.service.consulta.HorarioDisponivelMapper;
 import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
 import ufpi.engsoft2.seyfert.shared.exception.EntityNotFoundException;
 import ufpi.engsoft2.seyfert.domain.model.Medico;
+import ufpi.engsoft2.seyfert.domain.model.Paciente;
 
 @Service
 @AllArgsConstructor
@@ -190,6 +192,28 @@ public class ConsultaServiceImpl implements ConsultaService {
        consultaRepository.save(consulta);
        
        return new ResponsePadraoParaAtualizacaoRecursoDTO("Detalhes adicionados com sucesso na consulta");
+    }
+
+    @Override
+    @Transactional
+    public ResponsePadraoParaAtualizacaoRecursoDTO agendarConsulta(ConsultaForm consultaForm){
+        Medico medico = medicoRepository.findByUuid(consultaForm.getMedicoUuid());
+        Paciente paciente = pacienteRepository.findByUuid(consultaForm.getPacienteUuid());
+        Consulta consulta = consultaMapper.toModel(consultaForm);
+        if (medico == null) {
+            throw new EntityNotFoundException("Médico não encontrado");
+        }
+        if (paciente == null) {
+            throw new EntityNotFoundException("Paciente não encontrado");
+        }
+        if (consulta.getDataAtendimento().isBefore(LocalDate.now())) {
+            throw new BussinesRuleException("Não é possível agendar uma consulta para uma data anterior a data atual");
+        }
+
+        consulta.setMedico(medico);
+        consulta.setPaciente(paciente);
+        consulta.getPagamentoConsulta().setSituacao(SituacaoPagamento.AGUARDANDO_PAGAMENTO);
+        return new ResponsePadraoParaAtualizacaoRecursoDTO("Consulta agendada com sucesso");
     }
 
     @Override

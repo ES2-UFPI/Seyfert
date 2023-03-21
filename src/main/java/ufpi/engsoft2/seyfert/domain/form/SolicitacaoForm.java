@@ -2,7 +2,6 @@ package ufpi.engsoft2.seyfert.domain.form;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

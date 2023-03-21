@@ -20,7 +20,7 @@ import ufpi.engsoft2.seyfert.domain.enums.SituacaoProposta;
 public class PropostaDTO {
     private UUID uuid;
     private LocalTime horaInicial;
-    private LocalTime horafinal;
+    private LocalTime horaFinal;
     private LocalDate dataAtendimento;
     private BigDecimal valor;
     private UUID solicitacaoUuid;

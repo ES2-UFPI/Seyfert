@@ -1,6 +1,5 @@
 package ufpi.engsoft2.seyfert.shared.mapper;
 
-import java.text.Normalizer.Form;
 import java.util.List;
 
 public interface EntityNoDTOMapper<Entity, Form> {
