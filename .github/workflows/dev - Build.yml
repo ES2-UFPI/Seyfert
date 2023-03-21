@@ -5,10 +5,12 @@ on:
     branches:
     - dev_sprint01
     - dev_sprint02
+    - dev_sprint03
   pull_request:
     branches:
     - dev_sprint01
     - dev_sprint02
+    - dev_sprint03
 
 jobs:
   build:
