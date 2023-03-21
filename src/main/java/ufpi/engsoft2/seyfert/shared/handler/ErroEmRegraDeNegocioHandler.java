@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
 import ufpi.engsoft2.seyfert.shared.exception.dto.ExceptionDefaultDTO;
 

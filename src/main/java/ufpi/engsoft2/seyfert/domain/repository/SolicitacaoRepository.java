@@ -7,12 +7,10 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import ufpi.engsoft2.seyfert.domain.model.EspecialidadeMedica;
 import ufpi.engsoft2.seyfert.domain.model.Solicitacao;
 
-@Repository
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
     Page<Solicitacao> findByPacienteUuid(UUID uuidPaciente, Pageable pageable);
     Page<Solicitacao> findByPacienteUuidAndDataParaAtendimento(UUID uuidPaciente, LocalDate dataParaAtendimento, Pageable pageable);

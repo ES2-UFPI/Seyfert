@@ -51,7 +51,7 @@ public class Solicitacao extends EntityBase {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "solicitacao_id")
-    private List<Proposta> propostas = new ArrayList();
+    private List<Proposta> propostas = new ArrayList<Proposta>();
 
     // private EspecialidadeMedica especialidadeMedica;
     //Deve está relacionada com uma consulta, caso seja gerada
