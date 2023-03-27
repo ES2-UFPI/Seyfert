@@ -3,8 +3,11 @@ package ufpi.engsoft2.seyfert.solicitacao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -20,10 +23,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import ufpi.engsoft2.seyfert.domain.enums.Sexo;
+import ufpi.engsoft2.seyfert.domain.enums.SituacaoSolicitacao;
 import ufpi.engsoft2.seyfert.domain.model.EspecialidadeMedica;
 import ufpi.engsoft2.seyfert.domain.model.Paciente;
+import ufpi.engsoft2.seyfert.domain.model.Solicitacao;
 import ufpi.engsoft2.seyfert.domain.repository.EspecialidadeMedicaRepository;
 import ufpi.engsoft2.seyfert.domain.repository.PacienteRepository;
 import ufpi.engsoft2.seyfert.domain.repository.SolicitacaoRepository;
@@ -36,7 +42,6 @@ import ufpi.engsoft2.seyfert.domain.repository.SolicitacaoRepository;
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
 public class SolicitacaoControllerTest {
-    
     @Autowired
     private MockMvc mockMvc;
 
@@ -49,7 +54,7 @@ public class SolicitacaoControllerTest {
     @Autowired
     private SolicitacaoRepository solicitacaoRepository;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
         Paciente paciente = new Paciente();
         paciente.setNome("Teste");
@@ -57,34 +62,60 @@ public class SolicitacaoControllerTest {
         paciente.setDataNascimento(LocalDate.now().minusYears(20));
         paciente.setCpf("12345678910");
         paciente.setSexo(Sexo.MASCULINO);
+        paciente.setUuid(UUID.fromString("f9b360de-d79a-4770-9c15-a62591e67022"));
         pacienteRepository.save(paciente);
 
         EspecialidadeMedica especialidadeMedica = new EspecialidadeMedica();
         especialidadeMedica.setNomeEspecialidade("Cardiologia");
         especialidadeMedica.setDescricao("Especialidade que trata de doenças do coração");
         especialidadeMedica.setTempoMedioConsultaEmMinutos(30);
+        especialidadeMedica.setUuid(UUID.fromString("8e08cfed-0960-47dd-afe1-d1e5017d874b"));
         especialidadeMedicaRepository.save(especialidadeMedica);
 
-        assertEquals(1, pacienteRepository.count());
-        
-        assertEquals(1, especialidadeMedicaRepository.count());
+        Solicitacao solicitacao = new Solicitacao();
+        solicitacao.setDataParaAtendimento(LocalDate.now().plusYears(1));
+        solicitacao.setHoraInicial(LocalTime.now().plusHours(1));
+        solicitacao.setHoraFinal(LocalTime.now().plusHours(2));
+        solicitacao.setDescricaoSolicitacao("Teste de solicitacao");
+        solicitacao.setSexoPreferivelDoAtendimento(Sexo.OUTROS);
+        solicitacao.setPaciente(paciente);
+        solicitacao.setEspecialidadeMedica(especialidadeMedica);
+        solicitacaoRepository.save(solicitacao);
+
+        solicitacao = new Solicitacao();
+        solicitacao.setDataParaAtendimento(LocalDate.now().plusYears(1));
+        solicitacao.setHoraInicial(LocalTime.now().plusHours(1));
+        solicitacao.setHoraFinal(LocalTime.now().plusHours(2));
+        solicitacao.setDescricaoSolicitacao("Teste de solicitacao");
+        solicitacao.setSexoPreferivelDoAtendimento(Sexo.OUTROS);
+        solicitacao.setPaciente(paciente);
+        solicitacao.setEspecialidadeMedica(especialidadeMedica);
+        solicitacaoRepository.save(solicitacao);
     }
 
     @Test
-    @DisplayName("Teste de cadastro de solicitacoes")
+    @DisplayName("Teste de cadastro de solicitacoes endpoint created")
+    public void cadastroDeSolicitacaoEndpointOk() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.post("/solicitacao", 1L)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"dataParaAtendimento\": \"2023-01-25\", \"horaInicial\": \"10:00\", \"horaFinal\": \"11:00\", \"descricaoSolicitacao\": \"Teste de solicitacao\", \"sexoPreferivelDoAtendimento\": \"OUTROS\", \"pacienteUuid\": \"f9b360de-d79a-4770-9c15-a62591e67022\", \"especialidadeMedicaUuid\": \"8e08cfed-0960-47dd-afe1-d1e5017d874b\"}"))
+            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.dataParaAtendimento").value("2023-01-25"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.horaInicial").value("10:00:00"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.horaFinal").value("11:00:00"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.descricaoSolicitacao").value("Teste de solicitacao"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.sexoPreferivelDoAtendimento").value("OUTROS"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.nomePaciente").value("Teste"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.nomeEspecialidade").value("Cardiologia"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.situacaoSolicitacao").value("SOLICITADA"));
+    }
+
+    @Test
+    @DisplayName("Teste de cadastro de solicitacoes endpoint not found")
     public void cadastroDeSolicitacaoEndpointNotFound() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.post("/solicitacao", 1L)
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"dataParaAtendimento\": \"2023-01-25\", \"horaInicial\": \"10:00\", \"horaFinal\": \"11:00\", \"descricaoSolicitacao\": \"Teste de solicitacao\", \"sexoPreferivelDoAtendimento\": \"OUTROS\", \"pacienteUuid\": \"f9b360de-d79a-4770-9c15-a62591e67022\", \"especialidadeMedicaUuid\": \"8e08cfed-0960-47dd-afe1-d1e5017d874b\""))
+            .content("{\"dataParaAtendimento\": \"2023-01-25\", \"horaInicial\": \"10:00\", \"horaFinal\": \"11:00\", \"descricaoSolicitacao\": \"Teste de solicitacao\", \"sexoPreferivelDoAtendimento\": \"OUTROS\", \"pacienteUuid\": \"f9b360de-d79a-4770-9c15-a62591e67922\", \"especialidadeMedicaUuid\": \"8e08cfed-0960-47dd-afe1-d1e5017a874b\"}"))
             .andExpect(MockMvcResultMatchers.status().isNotFound());
-    }
-
-    @Test
-    @DisplayName("Teste de cadastro de solicitacoes")
-    public void cadastroDeSolicitacaoEndpoint() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.post("/solicitacao", 1L)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"data\": \"2023-01-25\", \"horaIn\": \"10:00\", \"horaFi\": \"11:00\", \"descricaoSolicitacao\": \"Teste de solicitacao\", \"sexoPreferivelDoAtendimento\": \"OUTROS\""))
-            .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }

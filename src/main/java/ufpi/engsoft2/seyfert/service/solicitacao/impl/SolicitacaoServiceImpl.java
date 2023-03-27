@@ -46,7 +46,6 @@ public class SolicitacaoServiceImpl implements SolicitacaoService {
     @Autowired
     private SolicitacaoMapper solicitacaoMapper;
 
-    @Override
     public SolicitacaoDTO cadastrar(SolicitacaoForm form) {
         Paciente paciente = pacienteRepository.findByUuid(form.getPacienteUuid());
         if (paciente == null) {
