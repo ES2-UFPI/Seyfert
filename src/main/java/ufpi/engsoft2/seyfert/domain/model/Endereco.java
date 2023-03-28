@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ufpi.engsoft2.seyfert.domain.enums.TipoEndereco;
@@ -19,6 +20,7 @@ import ufpi.engsoft2.seyfert.domain.enums.TipoEndereco;
 @Data
 @Table(name = "tb_endereco")
 @Entity
+@Builder
 @Embeddable
 public class Endereco extends EntityBase {
     private String cidade;

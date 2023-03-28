@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ufpi.engsoft2.seyfert.domain.enums.Sexo;
@@ -24,6 +25,7 @@ import ufpi.engsoft2.seyfert.domain.enums.SituacaoSolicitacao;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @Table(name = "tb_solicitacao")
 @Entity
 public class Solicitacao extends EntityBase {
