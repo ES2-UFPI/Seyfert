@@ -71,6 +71,16 @@ public class SolicitacaoServiceImpl implements SolicitacaoService {
         return solicitacaoDTO;
     }
 
+    @Override
+    public SolicitacaoDTO buscarSolicitacao(UUID uuid) {
+        Solicitacao solicitacao = solicitacaoRepository.findByUuid(uuid);
+        if (solicitacao == null) {
+            throw new EntityNotFoundException("Não foi encontrada solicitação com o uuid informado");
+        }
+        SolicitacaoDTO solicitacaoDTO = solicitacaoMapper.toDto(solicitacao);
+        return solicitacaoDTO;
+    }
+
     public Page<SolicitacaoDTO> listarSolicitacoesPaciente(UUID uuidPaciente, LocalDate dataParaAtendimento,
             String nomeEspecialidade, Pageable pageable) {
         Page<Solicitacao> pageSolicitacoes;
