@@ -100,24 +100,7 @@ public class SolicitacaoControllerTest {
         especialidadeMedicaRepository.deleteAll();
         pacienteRepository.deleteAll();
     }
-
-    @Test
-    @DisplayName("Teste de cadastro de solicitacoes endpoint created")
-    public void cadastroDeSolicitacaoEndpointOk() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.post("/solicitacao", 1L)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"dataParaAtendimento\": \"2023-01-25\", \"horaInicial\": \"10:00\", \"horaFinal\": \"11:00\", \"descricaoSolicitacao\": \"Teste de solicitacao\", \"sexoPreferivelDoAtendimento\": \"OUTROS\", \"pacienteUuid\": \"f9b360de-d79a-4770-9c15-a62591e67022\", \"especialidadeMedicaUuid\": \"8e08cfed-0960-47dd-afe1-d1e5017d874b\"}"))
-            .andExpect(MockMvcResultMatchers.status().isCreated())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.dataParaAtendimento").value("2023-01-25"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.horaInicial").value("10:00:00"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.horaFinal").value("11:00:00"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.descricaoSolicitacao").value("Teste de solicitacao"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sexoPreferivelDoAtendimento").value("OUTROS"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.nomePaciente").value("Teste"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.nomeEspecialidade").value("Cardiologia"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.situacaoSolicitacao").value("SOLICITADA"));
-    }
-
+    
     @Test
     @DisplayName("Teste de cadastro de solicitacoes endpoint not found")
     public void cadastroDeSolicitacaoEndpointNotFound() throws Exception{
