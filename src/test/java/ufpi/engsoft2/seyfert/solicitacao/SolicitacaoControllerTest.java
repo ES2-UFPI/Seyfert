@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -54,7 +55,7 @@ public class SolicitacaoControllerTest {
     @Autowired
     private SolicitacaoRepository solicitacaoRepository;
 
-    @BeforeEach
+    @BeforeAll
     public void setUp() {
         Paciente paciente = new Paciente();
         paciente.setNome("Teste");
@@ -91,6 +92,13 @@ public class SolicitacaoControllerTest {
         solicitacao.setPaciente(paciente);
         solicitacao.setEspecialidadeMedica(especialidadeMedica);
         solicitacaoRepository.save(solicitacao);
+    }
+
+    @AfterAll
+    public void tearDown() {
+        solicitacaoRepository.deleteAll();
+        especialidadeMedicaRepository.deleteAll();
+        pacienteRepository.deleteAll();
     }
 
     @Test
