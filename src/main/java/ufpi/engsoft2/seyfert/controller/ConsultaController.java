@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import ufpi.engsoft2.seyfert.domain.dto.ConsultaDTO;
 import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
+import ufpi.engsoft2.seyfert.domain.form.ConsultaForm;
 import ufpi.engsoft2.seyfert.domain.form.HorarioDisponivelMedicoForm;
 import ufpi.engsoft2.seyfert.service.consulta.ConsultaService;
 
@@ -69,6 +71,14 @@ public class ConsultaController {
     public ResponseEntity<ResponsePadraoParaAtualizacaoRecursoDTO> validarConsulta(@PathVariable UUID consultaUuid, @RequestParam String codigo){
 
         return ResponseEntity.ok(consultaService.validarConsulta(consultaUuid, codigo));
+    }
+
+    @PostMapping
+    public ResponseEntity<ResponsePadraoParaAtualizacaoRecursoDTO> agendarConsulta(@RequestBody ConsultaForm consultaForm,
+    UriComponentsBuilder uriComponentsBuilder){
+        ResponsePadraoParaAtualizacaoRecursoDTO resposta = consultaService.agendarConsulta(consultaForm);
+
+        return ResponseEntity.created(null).body(resposta);
     }
 
     @PatchMapping("/{consultaUuid}/cancelar")

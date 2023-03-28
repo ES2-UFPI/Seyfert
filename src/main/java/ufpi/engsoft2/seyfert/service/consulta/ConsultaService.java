@@ -10,10 +10,12 @@ import ufpi.engsoft2.seyfert.domain.dto.ConsultaDTO;
 import ufpi.engsoft2.seyfert.domain.dto.ResponsePadraoParaAtualizacaoRecursoDTO;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoConsulta;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoPagamento;
+import ufpi.engsoft2.seyfert.domain.form.ConsultaForm;
 import ufpi.engsoft2.seyfert.domain.form.HorarioDisponivelMedicoForm;
 
 public interface ConsultaService {
     ConsultaDTO getConsulta(UUID uuid);
+    ResponsePadraoParaAtualizacaoRecursoDTO agendarConsulta(ConsultaForm consultaForm);
     ResponsePadraoParaAtualizacaoRecursoDTO cancelarConsulta(UUID consultaUuid);
     Page<ConsultaDTO> listarConsultasPaciente(UUID pacienteUiud, SituacaoConsulta situacaoConsulta, SituacaoPagamento situacaoPagamento, LocalDate dataAtendimento, Pageable pageable);
     Page<ConsultaDTO> listarConsultasMedico(UUID medicoUuid, SituacaoConsulta situacaoConsulta, SituacaoPagamento situacaoPagamento, LocalDate dataAtendimento, Pageable pageable);
