@@ -56,7 +56,7 @@ public class SolicitacaoServiceTest {
     @Autowired
     private SolicitacaoServiceImpl solicitacaoService;
 
-    @BeforeEach
+    @BeforeAll
     public void setUp() {
         Paciente paciente = new Paciente();
         paciente.setNome("Teste");
