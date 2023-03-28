@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,7 +56,7 @@ public class SolicitacaoServiceTest {
     @Autowired
     private SolicitacaoServiceImpl solicitacaoService;
 
-    @BeforeEach
+    @BeforeAll
     public void setUp() {
         Paciente paciente = new Paciente();
         paciente.setNome("Teste");
@@ -72,6 +73,13 @@ public class SolicitacaoServiceTest {
         especialidadeMedica.setTempoMedioConsultaEmMinutos(30);
         especialidadeMedica.setUuid(UUID.fromString("8e08cfed-0960-47dd-afe1-d1e5017d874b"));
         especialidadeMedicaRepository.save(especialidadeMedica);
+    }
+    
+    @AfterAll
+    public void tearDown() {
+        solicitacaoRepository.deleteAll();
+        especialidadeMedicaRepository.deleteAll();
+        pacienteRepository.deleteAll();
     }
 
     @Test

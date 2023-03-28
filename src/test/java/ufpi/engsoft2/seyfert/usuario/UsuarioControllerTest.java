@@ -1,4 +1,4 @@
-package ufpi.engsoft2.seyfert.solicitacao;
+package ufpi.engsoft2.seyfert.usuario;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,7 +42,7 @@ import ufpi.engsoft2.seyfert.domain.repository.SolicitacaoRepository;
 @RequiredArgsConstructor
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
-public class SolicitacaoControllerTest {
+public class UsuarioControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -93,20 +93,19 @@ public class SolicitacaoControllerTest {
         solicitacao.setEspecialidadeMedica(especialidadeMedica);
         solicitacaoRepository.save(solicitacao);
     }
-
+  
     @AfterAll
     public void tearDown() {
         solicitacaoRepository.deleteAll();
         especialidadeMedicaRepository.deleteAll();
         pacienteRepository.deleteAll();
     }
-    
+
     @Test
-    @DisplayName("Teste de cadastro de solicitacoes endpoint not found")
-    public void cadastroDeSolicitacaoEndpointNotFound() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.post("/solicitacao", 1L)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"dataParaAtendimento\": \"2023-01-25\", \"horaInicial\": \"10:00\", \"horaFinal\": \"11:00\", \"descricaoSolicitacao\": \"Teste de solicitacao\", \"sexoPreferivelDoAtendimento\": \"OUTROS\", \"pacienteUuid\": \"f9b360de-d79a-4770-9c15-a62591e67922\", \"especialidadeMedicaUuid\": \"8e08cfed-0960-47dd-afe1-d1e5017a874b\"}"))
-            .andExpect(MockMvcResultMatchers.status().isNotFound());
+    @DisplayName("Buscar um paciente")
+    public void deveRetornar200AoBuscarUmPaciente() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/usuario")
+        .param("email", "email").param("senha", "senha"))
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
