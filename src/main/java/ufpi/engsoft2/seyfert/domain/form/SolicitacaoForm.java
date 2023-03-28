@@ -21,7 +21,7 @@ public class SolicitacaoForm {
     
     private Sexo sexoPreferivelDoAtendimento;
 
-    // private UUID pacienteUuid;
+    private UUID pacienteUuid;
 
-    // private UUID especialidadeMedicaUuid; 
+    private UUID especialidadeMedicaUuid;
 }

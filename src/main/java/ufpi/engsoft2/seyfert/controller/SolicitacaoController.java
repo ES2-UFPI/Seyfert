@@ -42,6 +42,11 @@ public class SolicitacaoController {
         return ResponseEntity.created(uri).body(solicitacaoDTO);
     }
 
+    @GetMapping("/{uuid}")
+    public ResponseEntity<SolicitacaoDTO> buscarSolicitacao(@PathVariable UUID uuid) {
+        return ResponseEntity.ok().body(solicitacaoService.buscarSolicitacao(uuid));
+    }
+
     @GetMapping("/paciente/{uuidPaciente}")
     public ResponseEntity<Page<SolicitacaoDTO>> listarSolicitacoesPaciente(@PathVariable UUID uuidPaciente,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataParaAtendimento,

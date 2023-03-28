@@ -1,7 +1,6 @@
 package ufpi.engsoft2.seyfert.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
