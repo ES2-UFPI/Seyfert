@@ -116,7 +116,7 @@ public class SolicitacaoServiceImpl implements SolicitacaoService {
         }
         Medico medico = medicoRepository.findByUuid(uuidMedico);
         if (medico == null) {
-            throw new EntityNotFoundException("Não foi encontrado um médico com o uuid informado");
+            throw new EntityNotFoundException("Não foi encontrado médico com o uuid informado "+uuidMedico);
         }
         List<EspecialidadeMedica> especialidadesMedicas = medico.getEspecialidades();
         if (especialidadesMedicas.isEmpty()) {

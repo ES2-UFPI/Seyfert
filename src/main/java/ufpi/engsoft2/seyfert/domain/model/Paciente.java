@@ -1,9 +1,12 @@
 package ufpi.engsoft2.seyfert.domain.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -11,21 +14,33 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ufpi.engsoft2.seyfert.domain.enums.Sexo;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Table(name = "tb_paciente")
 @Entity
-public class Paciente extends Usuario {
+public class Paciente extends EntityBase {
+
+    protected String nome;
+    protected String sobrenome;
+    protected String nomeCompleto;
+    private LocalDate dataNascimento;
+    private String cpf;
+    
+    @Enumerated(EnumType.STRING)
+    private Sexo sexo;
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "paciente_id")
     private List<Contato> contatos;
 
-    @OneToOne(mappedBy = "paciente", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "paciente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Endereco endereco;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -47,6 +62,9 @@ public class Paciente extends Usuario {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "paciente_id")
     private List<Consulta> consultas;
+
+    @OneToOne(mappedBy = "paciente")
+    private Usuario usuario;
 
     @PrePersist
     private void gerarNomeCompleto(){

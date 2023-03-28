@@ -1,5 +1,6 @@
 package ufpi.engsoft2.seyfert.domain.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.annotations.ManyToAny;
@@ -19,6 +20,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ufpi.engsoft2.seyfert.domain.enums.Sexo;
 import ufpi.engsoft2.seyfert.domain.enums.SituacaoMedico;
 import ufpi.engsoft2.seyfert.domain.enums.TipoEndereco;
 import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
@@ -28,10 +30,19 @@ import ufpi.engsoft2.seyfert.shared.exception.BussinesRuleException;
 @Data
 @Table(name = "tb_medico")
 @Entity
-public class Medico extends Usuario {
+public class Medico extends EntityBase {
 
+    protected String nome;
+    protected String sobrenome;
+    protected String nomeCompleto;
+    private LocalDate dataNascimento;
+    private String cpf;
     private String descricao;
     private String crm;
+    
+    @Enumerated(EnumType.STRING)
+    private Sexo sexo;
+
 
     @Enumerated(EnumType.STRING)
     private SituacaoMedico situacaoMedico;
@@ -68,6 +79,9 @@ public class Medico extends Usuario {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "medico_id")
     private List<Consulta> consultas;
+
+    @OneToOne(mappedBy = "medico")
+    private Usuario usuario;
 
     @PrePersist
     public void gerarNomeCompleto(){
