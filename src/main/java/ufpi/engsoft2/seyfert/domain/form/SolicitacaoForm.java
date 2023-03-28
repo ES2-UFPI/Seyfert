@@ -2,6 +2,7 @@ package ufpi.engsoft2.seyfert.domain.form;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class SolicitacaoForm {
     
     private Sexo sexoPreferivelDoAtendimento;
 
-    // private UUID pacienteUuid;
+    private UUID pacienteUuid;
 
-    // private UUID especialidadeMedicaUuid; 
+    private UUID especialidadeMedicaUuid;
 }
