@@ -16,9 +16,11 @@ import ufpi.engsoft2.seyfert.domain.enums.SituacaoSolicitacao;
 import ufpi.engsoft2.seyfert.domain.form.SolicitacaoForm;
 import ufpi.engsoft2.seyfert.domain.model.EspecialidadeMedica;
 import ufpi.engsoft2.seyfert.domain.model.Medico;
+import ufpi.engsoft2.seyfert.domain.model.Paciente;
 import ufpi.engsoft2.seyfert.domain.model.Solicitacao;
 import ufpi.engsoft2.seyfert.domain.repository.EspecialidadeMedicaRepository;
 import ufpi.engsoft2.seyfert.domain.repository.MedicoRepository;
+import ufpi.engsoft2.seyfert.domain.repository.PacienteRepository;
 import ufpi.engsoft2.seyfert.domain.repository.SolicitacaoRepository;
 import ufpi.engsoft2.seyfert.service.solicitacao.SolicitacaoMapper;
 import ufpi.engsoft2.seyfert.service.solicitacao.SolicitacaoService;
@@ -29,6 +31,9 @@ import ufpi.engsoft2.seyfert.shared.exception.EntityNotFoundException;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SolicitacaoServiceImpl implements SolicitacaoService {
+    @Autowired
+    private PacienteRepository pacienteRepository;
+
     @Autowired
     private MedicoRepository medicoRepository;
 
@@ -41,19 +46,27 @@ public class SolicitacaoServiceImpl implements SolicitacaoService {
     @Autowired
     private SolicitacaoMapper solicitacaoMapper;
 
-    @Override
     public SolicitacaoDTO cadastrar(SolicitacaoForm form) {
+        Paciente paciente = pacienteRepository.findByUuid(form.getPacienteUuid());
+        if (paciente == null) {
+            throw new EntityNotFoundException("Paciente não encontrado");
+        }
+        EspecialidadeMedica especialidadeMedica = especialidadeMedicaRepository.findByUuid(form.getEspecialidadeMedicaUuid());
+        if (especialidadeMedica == null) {
+            throw new EntityNotFoundException("Especialidade médica não encontrada");
+        }
+
         Solicitacao solicitacao = solicitacaoMapper.toModel(form);
         solicitacao.setSituacaoSolicitacao(SituacaoSolicitacao.SOLICITADA);
+        solicitacao.setPaciente(paciente);
+        solicitacao.setEspecialidadeMedica(especialidadeMedica);
+
+        SolicitacaoDTO solicitacaoDTO = solicitacaoMapper.toDto(solicitacaoRepository.save(solicitacao));
 
         // Esse dois setters devem ser ajustados para quando tivermos o cadastro de
         // paciente e especialidade
         // solicitacao.setPaciente(new Paciente());
         // solicitacao.setEspecialidadeMedica(new EspecialidadeMedica());
-
-        SolicitacaoDTO solicitacaoDTO = solicitacaoMapper.toDto(solicitacaoRepository.save(solicitacao));
-        solicitacaoDTO.setNomePaciente("Edson Arantes do Nascimento");
-        solicitacaoDTO.setNomeEspecialidade("Ortopedia");
 
         return solicitacaoDTO;
     }
