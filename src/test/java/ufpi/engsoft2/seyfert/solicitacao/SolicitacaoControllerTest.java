@@ -93,7 +93,7 @@ public class SolicitacaoControllerTest {
         solicitacao.setEspecialidadeMedica(especialidadeMedica);
         solicitacaoRepository.save(solicitacao);
     }
-    
+
     @AfterAll
     public void tearDown() {
         solicitacaoRepository.deleteAll();
